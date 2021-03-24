@@ -133,10 +133,19 @@ class DataTrainingArguments:
             "value if set."
         },
     )
+
     chars_to_ignore: List[str] = list_field(
         default=[",", "?", ".", "!", "-", ";", ":", '""', "%", "'", '"', "�"],
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
+
+    chars_to_ignore_regex: str = field(
+        default=None,
+        metadata={
+            "help": "The regex with chars to ignore"
+        }
+    )
+
 
 
 @dataclass
@@ -311,7 +320,10 @@ def main():
     eval_dataset = datasets.load_dataset("common_voice", data_args.dataset_config_name, split="test", cache_dir=model_args.cache_dir)
 
     # Create and save tokenizer
-    chars_to_ignore_regex = f'[{"".join(data_args.chars_to_ignore)}]'
+    #chars_to_ignore_regex = f'[{"".join(data_args.chars_to_ignore)}]'
+    chars_to_ignore_regex = data_args.chars_to_ignore_regex
+    logger.info('chars_to_ignore_regex = %r', chars_to_ignore_regex)
+
 
     def remove_special_characters(batch):
         batch["text"] = re.sub(chars_to_ignore_regex, "", batch["sentence"]).lower() + " "

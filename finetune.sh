@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 python run_common_voice.py \
     --model_name_or_path="facebook/wav2vec2-large-xlsr-53" \
-    --dataset_config_name="tr" \
-    --output_dir=/workspace/output_models/tr/wav2vec2-large-xlsr-turkish-demo \
-    --cache_dir=/workspace/data/tr \
+    --dataset_config_name="eo" \
+    --output_dir=/workspace/output_models/eo/wav2vec2-large-xlsr-esperanto-demo \
+    --cache_dir=/workspace/data/eo \
     --overwrite_output_dir \
-    --num_train_epochs="1" \
+    --num_train_epochs="30" \
     --per_device_train_batch_size="32" \
     --per_device_eval_batch_size="32" \
     --evaluation_strategy="steps" \
@@ -21,5 +21,5 @@ python run_common_voice.py \
     --feat_proj_dropout="0.0" \
     --layerdrop="0.1" \
     --gradient_checkpointing \
-    --do_train --do_eval \
-    --max_train_samples 100 --max_val_samples 100
+    --chars_to_ignore_regex "[\,\?\.\!\-\;\:\"\“\%\‘\”\�\«\»\)\(\„\–\’\—\']"
+    --do_train --do_eval
